@@ -1,0 +1,19 @@
+{
+  "name": "glidemesh",
+  "version": "1.0.0",
+  "description": "Minimal boilerplate using Three.js with esbuild.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "esbuild src/js/main.js --bundle --outfile=dist/app.js --serve=8000 --servedir=dist --sourcemap",
+    "build": "esbuild src/js/main.js --bundle --minify --outfile=dist/app.js"
+  },
+  "author": "ogelami",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.14.41"
+  },
+  "dependencies": {
+    "delaunator": "^5.0.0",
+    "three": "^0.141.0"
+  }
+}
