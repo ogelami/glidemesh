@@ -1,8 +1,11 @@
-<input type="file" id="inp" style="display: none;" />
+<button id="stator">state: point</button>
 <button id="image-chooser">choose image</button>
 <button id="save">save</button>
 <button id="load">load</button>
+
+<input type="file" id="inp" style="display: none;" />
 <input type="file" id="loadie" style="display: none;" />
+
 <canvas id="canvas"></canvas>
 
 <script>
@@ -14,6 +17,7 @@
   let saveButton = document.getElementById('save')
   let loadButton = document.getElementById('load')
   let imageChooserButton = document.getElementById('image-chooser')
+  let statorButton = document.getElementById('stator')
 
   let resultLeft = {}
   let resultRight = {}
@@ -22,9 +26,12 @@
   let holdTarget = false
   let pairSelect = 'a'
   
-  let qOffset = 0
+  let zValueOffset = 0
   let zValue = ''
 
+  let stateOffset = 0
+  let states = ['point', 'measure']
+  
   let pairColors = {
     'a': 'red',    // a
     'b': 'yellow', // b
@@ -37,6 +44,7 @@
   }
 
   saveButton.onclick = save
+  statorButton.onclick = toggleState
   loadButton.onclick = () => loadie.click()
   imageChooserButton.onclick = () => inp.click()
 
@@ -62,7 +70,7 @@
       resultLeft = parsedResult['resultLeft']
       pairColors = parsedResult['pairColors']
 
-      parsedResult['resultLeft']['v'] = [[a0XMin, a0YMin + 25], [a0XMin + parsedResult['getRightLeftSpacing'], a0YMin + 25]]
+      parsedResult['resultLeft']['v'] = [[a0XMin, a0YMin - 60], [a0XMin + parsedResult['getRightLeftSpacing'], a0YMin - 60]]
 
       mirror()
     }
@@ -99,6 +107,7 @@
     }
 
     resultLeft[pairSelect].push([e.offsetX, e.offsetY])
+    holdTarget = [pairSelect, resultLeft[pairSelect].length - 1]
   }
 
   canvas.onmousemove = function (e) {
@@ -124,9 +133,21 @@
         mirror()
       }
     } else if (e.key == 'Enter') {
-      qOffset++
+      let tempOffset = 0
       zValue = parseInt(zValue)
-      alert(zValue)
+
+      for (const [key, value] of Object.entries(resultLeft)) {
+        for(let i = 0; i < value.length; i++) {
+          if (tempOffset == zValueOffset) {
+            value[i].push(zValue)
+//            console.log(key, i)
+          }
+
+          tempOffset++
+        }
+      }
+
+      zValueOffset++
       zValue = ''
     } else {
       let maybeNumber = parseInt(e.key)
@@ -149,6 +170,13 @@
         console.log(maybeNumber)*/
       }
     }
+  }
+
+  function toggleState() {
+    stateOffset++
+    stateOffset %= states.length
+
+    statorButton.innerText = 'state: ' + states[stateOffset]
   }
 
   function save() {
@@ -217,6 +245,8 @@
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.drawImage(image, 0, 0)
 
+    context.strokeText(zValue, 0, 10)
+
     for (const [key, value] of Object.entries(resultLeft)) {
       context.fillStyle = pairColors[key]
       
@@ -227,6 +257,11 @@
         context.stroke()
 
         context.strokeText(key + (i + 1), value[i][0], value[i][1] + 15)
+
+        if(value[i].length >= 3)
+        {
+          context.strokeText(value[i][2], value[i][0], value[i][1] - 10)
+        }
       }
     }
 
