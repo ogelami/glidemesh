@@ -85,35 +85,6 @@ module.exports = {
 		'prefer-exponentiation-operator': [
 			'error'
 		],
-		'unicorn/error-message': [
-			'error'
-		],
-		'unicorn/escape-case': [
-			'error'
-		],
-		// not comp old version browsers -> to check
-		'unicorn/no-instanceof-array': [
-			'error'
-		],
-		'unicorn/no-unsafe-regex': [
-			'off'
-		],
-		'unicorn/number-literal-case': [
-			'error'
-		],
-		'unicorn/prefer-includes': [
-			'error'
-		],
-		// Could not find that rule
-		// 'unicorn/prefer-text-content': [
-		// 	'error'
-		// ],
-		'unicorn/prefer-type-error': [
-			'error'
-		],
-		'unicorn/throw-new-error': [
-			'error'
-		],
 		// 'accessor-pairs': [
 		// 	'error'
 		// ],
@@ -615,7 +586,7 @@ module.exports = {
 		],
 		semi: [
 			'error',
-			'always'
+			'never'
 		],
 		'semi-spacing': [
 			'error',
@@ -778,4 +749,4 @@ module.exports = {
 		// removeStoredItem: 'writeable'
 	},
 	ignorePatterns: []
-};
+}
