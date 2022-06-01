@@ -1,18 +1,14 @@
 {
-  "name": "glidemesh",
-  "version": "1.0.0",
-  "description": "Minimal boilerplate using Three.js with esbuild.",
-  "main": "index.js",
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
   "scripts": {
-    "dev": "esbuild src/js/main.js --bundle --outfile=dist/app.js --serve=8000 --servedir=dist --sourcemap",
-    "build": "esbuild src/js/main.js --bundle --minify --outfile=dist/app.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "author": "ogelami",
-  "license": "ISC",
   "devDependencies": {
-    "esbuild": "^0.14.41"
-  },
-  "dependencies": {
+    "vite": "^2.9.9",
     "delaunator": "^5.0.0",
     "three": "^0.141.0"
   }

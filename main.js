@@ -1,3 +1,4 @@
+import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // import { FlyControls } from 'three/examples/jsm/controls/FlyControls.js'
@@ -7,9 +8,9 @@ import Delaunator from 'delaunator'
 let scene, camera, renderer, cube, controls, stats, material
 const points = []
 
-const pointset = require('./data/pointset.json')
-const glider = require('./data/glider.json')
-const gliderZ = require('./data/glider-diff-z.json')
+import pointset  from './data/pointset.json'
+import glider  from './data/glider.json'
+import gliderZ  from './data/glider-diff-z.json'
 
 /* const glider = require('./data/cumeo.json')
 const gliderZ = require('./data/cumeo-diff-z.json') */
@@ -18,7 +19,9 @@ window.ps = pointset
 window.g = glider
 window.z = gliderZ
 
-function init () {
+console.log('???');
+
+function init() {
   console.log('THREE v', THREE.REVISION)
   stats = new Stats()
   document.body.appendChild(stats.dom)
@@ -74,7 +77,7 @@ function init () {
   update()
 }
 
-function update () {
+function update() {
   requestAnimationFrame(update)
 
   if (cube) {
@@ -87,7 +90,7 @@ function update () {
   }
 }
 
-function onResize () {
+function onResize() {
   const w = window.innerWidth
   const h = window.innerHeight
 
