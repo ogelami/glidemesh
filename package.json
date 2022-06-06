@@ -1,5 +1,5 @@
 {
-  "name": "vite-project",
+  "name": "glidemesh",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -9,11 +9,15 @@
   },
   "devDependencies": {
     "delaunator": "^5.0.0",
-    "eslint": "^8.16.0",
     "three": "^0.141.0",
+    "typescript": "^4.7.3",
     "vite": "^2.9.9"
   },
   "dependencies": {
     "lil-gui": "^0.16.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:ogelami/glidemesh.git",
+  "author": "ogelami <ogelami@gmail.com>",
+  "license": "MIT"
 }

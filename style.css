@@ -5,10 +5,3 @@ body {
   overflow: hidden;
   text-align: center;
 }
-
-#info {
-  color: #fff;
-  position: absolute;
-  top: 10px;
-  width: 100%;
-}
