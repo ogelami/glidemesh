@@ -35,6 +35,10 @@ export class Editor extends Page {
     this.zValue = ""
     this.zValueOffset = 0
 
+    //import imgUrl from './images/cumeo-m.png'
+    
+    this.image.src = '/images/ion4-lineplan-complete.png'
+
     this.bindEvents()
   }
 

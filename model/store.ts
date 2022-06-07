@@ -89,8 +89,6 @@ class Glider {
   }
 
   move(pairSelect: string, offset: number, x: number, y: number) {
-    console.log(pairSelect, offset)
-
     this.glider.left[pairSelect][offset][0] = x
     this.glider.left[pairSelect][offset][1] = y
 

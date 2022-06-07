@@ -20,7 +20,8 @@ const params = {
   editorLoad: () => editor.load(),
 
   viewerZFactor: 1,
-	viewerFlex: false
+	viewerFlex: false,
+  viewerReload: () => viewer.reload()
 }
 
 let targetPage = editor
@@ -39,8 +40,6 @@ gui
     }
 
     targetPage.display()
-
-    console.log(targetPage)
   })
 
 const editorFolder = gui.addFolder("Editor")
@@ -50,8 +49,17 @@ editorFolder.add(params, "editorSave").name("Save")
 editorFolder.add(params, "editorChooseImage").name("Choose Image")
 editorFolder.add(params, "editorLoad").name("Load")
 
-viewFolder.add(params, "viewerZFactor", 0.1, 3).name("Z-factor")
-viewFolder.add(params, "viewerFlex").name("Flex")
+viewFolder.add(params, "viewerZFactor", 0.1, 3).name("Z-factor").onChange(zFactor => {
+  viewer.zFactor = zFactor
+  viewer.reload()
+})
+
+viewFolder.add(params, "viewerFlex").name("Flex").onChange(state => {
+  viewer.flex = state
+  viewer.reload()
+})
+
+viewFolder.add(params, "viewerReload").name("Reload")
 
 function render() {
   requestAnimationFrame(render)
