@@ -1,3 +1,5 @@
+import ion4LineplanPath from '/data/ion4-lineplan.json'
+
 interface PointMapInterface {
   a?: Array<number>
   b?: Array<number>
@@ -34,14 +36,14 @@ export const gliderObject: GliderInterface = {
   left: {},
   right: {},
   pairColors: {
-    a: "red", // a
-    b: "yellow", // b
-    c: "blue", // c, if available
-    d: "black", // d, if available
-    e: "black", // e, if available
-    k: "orange", // break-lines
-    s: "green", // stabilo
-    v: "purple", // vMin
+    a: 'red', // a
+    b: 'yellow', // b
+    c: 'blue', // c, if available
+    d: 'black', // d, if available
+    e: 'black', // e, if available
+    k: 'orange', // break-lines
+    s: 'green', // stabilo
+    v: 'purple', // vMin
   },
 }
 
@@ -50,6 +52,8 @@ class Glider {
 
   constructor() {
     this.glider = gliderObject
+    console.log(ion4LineplanPath)
+    this.load(ion4LineplanPath)
   }
 
   set left(pointMap) {
@@ -74,7 +78,7 @@ class Glider {
 
   push(pairSelect: string, x: number, y: number): void {
     if (!(pairSelect in this.glider.left)) {
-      glider.left[pairSelect] = []
+      this.glider.left[pairSelect] = []
     }
 
     this.glider.left[pairSelect].push([x, y])
@@ -119,7 +123,7 @@ class Glider {
   }
 
   getRightLeftSpacing(): number | boolean {
-    if (!("v" in this.glider.left) || this.glider.left.v.length !== 2) {
+    if (!('v' in this.glider.left) || this.glider.left.v.length !== 2) {
       return false
     }
 
@@ -161,8 +165,8 @@ class Glider {
     this.glider.left = data.left
     this.glider.pairColors = data.pairColors
 
-    this.push("v", a0XMin, a0YMin - 60)
-    this.push("v", a0XMin + data.getRightLeftSpacing, a0YMin - 60)
+    this.push('v', a0XMin, a0YMin - 60)
+    this.push('v', a0XMin + data.getRightLeftSpacing, a0YMin - 60)
   }
 }
 

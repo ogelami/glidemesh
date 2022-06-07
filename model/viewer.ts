@@ -1,12 +1,12 @@
-import { Page } from "./page"
-//import { glider } from './store'
-import Delaunator from "delaunator"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
+import { Page } from './page'
+import { glider } from './store'
+import Delaunator from 'delaunator'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import XGlider from "../data/glider.json"
-import XGliderZ from "../data/glider-diff-z.json"
+import XGlider from '../data/glider.json'
+import XGliderZ from '../data/glider-diff-z.json'
 
-import * as THREE from "three"
+import * as THREE from 'three'
 
 export class Viewer extends Page {
   scene: THREE.Scene
@@ -18,7 +18,7 @@ export class Viewer extends Page {
   cube: THREE.Mesh
   dTriangles: Delaunator
   pointer: THREE.Vector2
-  
+
   flex: boolean
   zFactor: number
 
@@ -33,7 +33,7 @@ export class Viewer extends Page {
     this.spheres = []
     this.zFactor = 1
 
-    this.pointer = new THREE.Vector2();
+    this.pointer = new THREE.Vector2()
 
     this.scene = new THREE.Scene()
     console.log(this.scene)
@@ -56,7 +56,21 @@ export class Viewer extends Page {
     dom.appendChild(this.renderer.domElement)
 
     this.dTriangles = Delaunator.from(XGlider)
-    this.reload()
+    //  this.reload()
+    console.log(this.phun)
+    this.phun()
+  }
+
+  phun() {
+    for (const [pair, value] of Object.entries(glider.left)) {
+      console.log(pair, value)
+
+      console.log(glider.pairColors[pair])
+
+      for (const coordinate of value) {
+        console.log(coordinate[0], coordinate[1])
+      }
+    }
   }
 
   reload(): void {
@@ -80,18 +94,18 @@ export class Viewer extends Page {
 
     this.material = new THREE.MeshBasicMaterial({
       color: 0x00ff00,
-      wireframe: true
+      wireframe: true,
     })
 
-    if(this.cube) {
+    if (this.cube) {
       this.scene.remove(this.cube)
     }
 
-    for(let i = 0; i < this.spheres.length; i++) {
+    for (let i = 0; i < this.spheres.length; i++) {
       this.scene.remove(this.spheres[i])
     }
 
-    for(let i = 0; i < XGlider.length; i++) {
+    for (let i = 0; i < XGlider.length; i++) {
       const sphereGeometry = new THREE.SphereGeometry(0.01, 32, 32)
       const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 
@@ -100,24 +114,23 @@ export class Viewer extends Page {
       sphere.position.x = XGlider[i][0]
       sphere.position.y = XGlider[i][1]
       sphere.position.z = XGliderZ[i] / 850 / this.zFactor
-      
+
       this.scene.add(sphere)
 
       this.spheres.push(sphere)
     }
 
-
-
-
-
-    this.cube = new THREE.Mesh(geometry, this.material as THREE.MeshBasicMaterial)
+    this.cube = new THREE.Mesh(
+      geometry,
+      this.material as THREE.MeshBasicMaterial
+    )
     console.log(this.cube)
 
     const center = new THREE.Vector3()
 
     this.cube.geometry.computeBoundingBox()
     this.cube.geometry.boundingBox.getCenter(center)
-    this.cube.geometry.center();
+    this.cube.geometry.center()
 
     this.cube.position.copy(center)
 
@@ -127,21 +140,21 @@ export class Viewer extends Page {
   display(): void {
     super.display()
     window.addEventListener('resize', () => this.onResize(), false)
-    this.dom.addEventListener('pointermove', e => this.mouseMove(e))
+    this.dom.addEventListener('pointermove', (e) => this.mouseMove(e))
   }
 
   hide(): void {
     super.hide()
     window.removeEventListener('resize', () => this.onResize())
-    this.dom.removeEventListener('pointermove', e => this.mouseMove(e))
+    this.dom.removeEventListener('pointermove', (e) => this.mouseMove(e))
   }
 
   mouseMove(e) {
     /*this.pointer.x = e.offsetX
     this.pointer.y = e.offsetY*/
 
-    this.pointer.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+    this.pointer.x = (e.clientX / window.innerWidth) * 2 - 1
+    this.pointer.y = -(e.clientY / window.innerHeight) * 2 + 1
   }
 
   onResize() {
@@ -164,8 +177,8 @@ export class Viewer extends Page {
       this.rayCaster.setFromCamera(this.pointer, this.camera)
 
       const interesects = this.rayCaster.intersectObjects(this.spheres)
-      
-      for(let i = 0; i < interesects.length; i++) {
+
+      for (let i = 0; i < interesects.length; i++) {
         this.scene.remove(interesects[i].object)
       }
 

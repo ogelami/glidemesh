@@ -1,5 +1,7 @@
-import { Page } from "./page"
-import { glider } from "./store"
+import { Page } from './page'
+import { glider } from './store'
+
+import ion4LineplanImagePath from '/images/ion4-lineplan-complete.png'
 
 interface HoldTarget {
   pairSelect: string
@@ -25,19 +27,17 @@ export class Editor extends Page {
   constructor(dom: HTMLElement) {
     super(dom)
 
-    this.inp = document.getElementById("inp") as HTMLInputElement
-    this.loadie = document.getElementById("loadie")
-    this.canvas = document.getElementById("canvas") as HTMLCanvasElement
-    this.context = this.canvas.getContext("2d")
+    this.inp = document.getElementById('inp') as HTMLInputElement
+    this.loadie = document.getElementById('loadie')
+    this.canvas = document.getElementById('canvas') as HTMLCanvasElement
+    this.context = this.canvas.getContext('2d')
 
     this.image = new Image()
-    this.pairSelect = "a"
-    this.zValue = ""
+    this.pairSelect = 'a'
+    this.zValue = ''
     this.zValueOffset = 0
 
-    //import imgUrl from './images/cumeo-m.png'
-    
-    this.image.src = '/images/ion4-lineplan-complete.png'
+    this.image.src = ion4LineplanImagePath
 
     this.bindEvents()
   }
@@ -93,7 +93,7 @@ export class Editor extends Page {
       }
 
       if (
-        this.pairSelect === "v" &&
+        this.pairSelect === 'v' &&
         this.pairSelect in glider.left &&
         glider.left.v.length >= 2
       ) {
@@ -127,11 +127,11 @@ export class Editor extends Page {
   keyDownEvent(e) {
     if (e.key in glider.pairColors) {
       this.pairSelect = e.key
-    } else if (e.key == "Backspace") {
+    } else if (e.key == 'Backspace') {
       if (this.pairSelect in glider.left) {
         glider.pop(this.pairSelect)
       }
-    } else if (e.key == "Enter") {
+    } else if (e.key == 'Enter') {
       let tempOffset = 0
       const zValueParsed = parseInt(this.zValue)
 
@@ -148,7 +148,7 @@ export class Editor extends Page {
       }
 
       this.zValueOffset++
-      this.zValue = ""
+      this.zValue = ''
     } else {
       const maybeNumber = parseInt(e.key)
 
@@ -162,12 +162,12 @@ export class Editor extends Page {
 
   display(): void {
     super.display()
-    document.body.addEventListener("keydown", (e) => this.keyDownEvent(e))
+    document.body.addEventListener('keydown', (e) => this.keyDownEvent(e))
   }
 
   hide(): void {
     super.hide()
-    document.body.removeEventListener("keydown", (e) => this.keyDownEvent(e))
+    document.body.removeEventListener('keydown', (e) => this.keyDownEvent(e))
   }
 
   chooseImage(): void {
@@ -175,21 +175,21 @@ export class Editor extends Page {
   }
 
   save(): void {
-    const elem = window.document.createElement("a")
+    const elem = window.document.createElement('a')
     const data = glider.getData()
 
     if (data === false) {
-      alert("missing v?")
+      alert('missing v?')
 
       return
     }
 
     const blob = new Blob([JSON.stringify(glider.getData(), null, 2)], {
-      type: "text/json",
+      type: 'text/json',
     })
 
     elem.href = window.URL.createObjectURL(blob)
-    elem.download = "line-spacing.json"
+    elem.download = 'line-spacing.json'
 
     document.body.appendChild(elem)
     elem.click()
