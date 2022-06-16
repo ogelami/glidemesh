@@ -16,13 +16,8 @@ export class Page {
   update() {
     // empty
   }
+
   render() {
-    // empty
-  }
-  active() {
-    // empty
-  }
-  inactive() {
     // empty
   }
 }

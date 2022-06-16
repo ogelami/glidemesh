@@ -56,19 +56,35 @@ export class Viewer extends Page {
     dom.appendChild(this.renderer.domElement)
 
     this.dTriangles = Delaunator.from(XGlider)
-    //  this.reload()
-    console.log(this.phun)
-    this.phun()
+    this.reload()
   }
 
   phun() {
-    for (const [pair, value] of Object.entries(glider.left)) {
-      console.log(pair, value)
+    for (let i = 0; i < this.spheres.length; i++) {
+      this.scene.remove(this.spheres[i])
+    }
 
-      console.log(glider.pairColors[pair])
+    for (const side of [glider.left, glider.right]) {
+      for (const [pair, value] of Object.entries(side)) {
+        //console.log(pair, value)
+        //console.log(glider.pairColors[pair])
+        if (pair === 'v') {
+          continue
+        }
 
-      for (const coordinate of value) {
-        console.log(coordinate[0], coordinate[1])
+        for (const coordinate of value) {
+          const sphereGeometry = new THREE.SphereGeometry(0.01, 32, 32)
+          const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    
+          const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+    
+          sphere.position.x = coordinate['x'] / 1700
+          sphere.position.y = coordinate['y'] / 1700
+          sphere.position.z = (coordinate['z'] ?? 0) / 850 / this.zFactor
+
+          this.scene.add(sphere)
+          this.spheres.push(sphere)
+        }
       }
     }
   }
@@ -105,25 +121,13 @@ export class Viewer extends Page {
       this.scene.remove(this.spheres[i])
     }
 
-    for (let i = 0; i < XGlider.length; i++) {
-      const sphereGeometry = new THREE.SphereGeometry(0.01, 32, 32)
-      const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-
-      const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
-
-      sphere.position.x = XGlider[i][0]
-      sphere.position.y = XGlider[i][1]
-      sphere.position.z = XGliderZ[i] / 850 / this.zFactor
-
-      this.scene.add(sphere)
-
-      this.spheres.push(sphere)
-    }
+    this.phun()
 
     this.cube = new THREE.Mesh(
       geometry,
       this.material as THREE.MeshBasicMaterial
     )
+    
     console.log(this.cube)
 
     const center = new THREE.Vector3()

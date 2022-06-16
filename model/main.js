@@ -1,15 +1,18 @@
 import { Editor } from "./editor"
 import GUI from "lil-gui"
 import { Viewer } from "./viewer"
+import { Measure } from './measure'
 
 export const gui = new GUI()
 
 const viewer = new Viewer(document.getElementById("viewer"))
 const editor = new Editor(document.getElementById("editor"))
+const measure = new Measure(document.getElementById('measure'))
 
 const state = {
-  Editor: 0,
-  Viewer: 1,
+	Editor: 0,
+	Viewer: 1,
+	Measure: 2,
 }
 
 const params = {
@@ -24,23 +27,25 @@ const params = {
   viewerReload: () => viewer.reload()
 }
 
-let targetPage = editor
+let targetPage = measure
 targetPage.display()
 
 gui
-  .add(params, "currentState", state)
-  .name("State")
-  .onChange((newState) => {
-    targetPage.hide()
+	.add(params, 'currentState', state)
+	.name('State')
+	.onChange(newState => {
+		targetPage.hide()
 
-    if (newState === state.Editor) {
-      targetPage = editor
-    } else if (newState === state.Viewer) {
-      targetPage = viewer
-    }
+		if (newState === state.Editor) {
+			targetPage = editor
+		} else if (newState === state.Viewer) {
+			targetPage = viewer
+		} else if (newState === state.Measure) {
+			targetPage = measure
+		}
 
-    targetPage.display()
-  })
+		targetPage.display()
+	})
 
 const editorFolder = gui.addFolder("Editor")
 const viewFolder = gui.addFolder("View")

@@ -1,14 +1,20 @@
 import ion4LineplanPath from '/data/ion4-lineplan.json'
 
+interface Vector3 {
+  x: number,
+  y: number,
+  z: number
+}
+
 interface PointMapInterface {
-  a?: Array<number>
-  b?: Array<number>
-  c?: Array<number>
-  d?: Array<number>
-  e?: Array<number>
-  k?: Array<number>
-  s?: Array<number>
-  v?: Array<number>
+  a?: Array<Vector3>
+  b?: Array<Vector3>
+  c?: Array<Vector3>
+  d?: Array<Vector3>
+  e?: Array<Vector3>
+  k?: Array<Vector3>
+  s?: Array<Vector3>
+  v?: Array<Vector3>
 }
 
 interface PairColorsInterface {
@@ -29,7 +35,7 @@ interface GliderInterface {
 }
 
 export const getRightLeftSpacing = (glider: GliderInterface): number => {
-  return Math.abs(glider.left.v[0][0] - glider.left.v[1][0])
+  return Math.abs(glider.left.v[0]['x'] - glider.left.v[1]['x'])
 }
 
 export const gliderObject: GliderInterface = {
@@ -81,7 +87,7 @@ class Glider {
       this.glider.left[pairSelect] = []
     }
 
-    this.glider.left[pairSelect].push([x, y])
+    this.glider.left[pairSelect].push({x, y})
 
     this.mirror()
   }
@@ -93,8 +99,8 @@ class Glider {
   }
 
   move(pairSelect: string, offset: number, x: number, y: number) {
-    this.glider.left[pairSelect][offset][0] = x
-    this.glider.left[pairSelect][offset][1] = y
+    this.glider.left[pairSelect][offset]['x'] = x
+    this.glider.left[pairSelect][offset]['y'] = y
 
     this.mirror()
   }
@@ -106,7 +112,7 @@ class Glider {
       return
     }
 
-    const startX = this.glider.left.a[0][0]
+    const startX = this.glider.left.a[0]['x']
 
     this.glider.right = JSON.parse(JSON.stringify(this.glider.left))
 
@@ -114,8 +120,8 @@ class Glider {
 
     for (const [key, value] of Object.entries(this.glider.right)) {
       for (let i = 0; i < value.length; i++) {
-        this.glider.right[key][i][0] =
-          -this.glider.right[key][i][0] +
+        this.glider.right[key][i]['x'] =
+          -this.glider.right[key][i]['x'] +
           startX * 2 +
           (rightLeftSpacing as number)
       }
@@ -127,7 +133,7 @@ class Glider {
       return false
     }
 
-    return Math.abs(this.glider.left.v[0][0] - this.glider.left.v[1][0])
+    return Math.abs(this.glider.left.v[0]['x'] - this.glider.left.v[1]['x'])
   }
 
   clone(wing: PointMapInterface) {
@@ -159,8 +165,8 @@ class Glider {
     this.glider.left = data.left
     this.glider.pairColors = data.pairColors
 
-    const a0XMin = data.left.a[0][0]
-    const a0YMin = data.left.a[0][1]
+    const a0XMin = data.left.a[0]['x']
+    const a0YMin = data.left.a[0]['y']
 
     this.glider.left = data.left
     this.glider.pairColors = data.pairColors

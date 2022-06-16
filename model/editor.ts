@@ -24,6 +24,8 @@ export class Editor extends Page {
   zValueOffset: number
   zValue: string
 
+  keyDownEventBound: any
+
   constructor(dom: HTMLElement) {
     super(dom)
 
@@ -36,6 +38,7 @@ export class Editor extends Page {
     this.pairSelect = 'a'
     this.zValue = ''
     this.zValueOffset = 0
+    this.keyDownEventBound = this.keyDownEvent.bind(this)
 
     this.image.src = ion4LineplanImagePath
 
@@ -76,7 +79,7 @@ export class Editor extends Page {
 
         for (let i = 0; i < value.length; i++) {
           const distance = Math.sqrt(
-            (e.offsetX - value[i][0]) ** 2 + (e.offsetY - value[i][1]) ** 2
+            (e.offsetX - value[i]['x']) ** 2 + (e.offsetY - value[i]['y']) ** 2
           )
 
           if (distance < 30) {
@@ -135,10 +138,13 @@ export class Editor extends Page {
       let tempOffset = 0
       const zValueParsed = parseInt(this.zValue)
 
-      for (const i in Object.keys(glider.left)) {
-        for (let ii = 0; ii < glider.left[i].length; ii++) {
+      for (const group of Object.values(glider.left)) {
+        for (const point of Object.values(group)) {
           if (tempOffset == this.zValueOffset) {
-            glider.left[i].push(zValueParsed)
+            point['z'] = zValueParsed
+
+            this.zValueOffset++
+            this.zValue = ''
 
             return
           }
@@ -146,9 +152,6 @@ export class Editor extends Page {
           tempOffset++
         }
       }
-
-      this.zValueOffset++
-      this.zValue = ''
     } else {
       const maybeNumber = parseInt(e.key)
 
@@ -162,12 +165,12 @@ export class Editor extends Page {
 
   display(): void {
     super.display()
-    document.body.addEventListener('keydown', (e) => this.keyDownEvent(e))
+    document.body.addEventListener('keydown', this.keyDownEventBound, true)
   }
 
   hide(): void {
     super.hide()
-    document.body.removeEventListener('keydown', (e) => this.keyDownEvent(e))
+    document.body.removeEventListener('keydown', this.keyDownEventBound, true)
   }
 
   chooseImage(): void {
@@ -211,14 +214,14 @@ export class Editor extends Page {
 
       for (let i = 0; i < value.length; i++) {
         this.context.beginPath()
-        this.context.arc(value[i][0], value[i][1], 5, 0, 2 * Math.PI)
+        this.context.arc(value[i]['x'], value[i]['y'], 5, 0, 2 * Math.PI)
         this.context.fill()
         this.context.stroke()
 
-        this.context.strokeText(key + (i + 1), value[i][0], value[i][1] + 15)
+        this.context.strokeText(key + (i + 1), value[i]['x'], value[i]['y'] + 15)
 
-        if (value[i].length >= 3) {
-          this.context.strokeText(value[i][2], value[i][0], value[i][1] - 10)
+        if (value[i]['z']) {
+          this.context.strokeText(value[i]['z'], value[i]['x'], value[i]['y'] - 10)
         }
       }
     }
@@ -228,11 +231,11 @@ export class Editor extends Page {
 
       for (let i = 0; i < value.length; i++) {
         this.context.beginPath()
-        this.context.arc(value[i][0], value[i][1], 5, 0, 2 * Math.PI)
+        this.context.arc(value[i]['x'], value[i]['y'], 5, 0, 2 * Math.PI)
         this.context.fill()
         this.context.stroke()
 
-        this.context.strokeText(key + (i + 1), value[i][0], value[i][1] + 15)
+        this.context.strokeText(key + (i + 1), value[i]['x'], value[i]['y'] + 15)
       }
     }
   }

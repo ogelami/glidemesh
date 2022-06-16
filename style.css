@@ -5,3 +5,20 @@ body {
   overflow: hidden;
   text-align: center;
 }
+
+input {
+  width: 35px;
+}
+
+.c {
+  display: inline-block;
+  background-color: parent;
+}
+
+.l {
+  background-color: #ffbbbb;
+}
+
+.r {
+  background-color: #ddffbb;
+}
