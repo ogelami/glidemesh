@@ -1,5 +1,5 @@
 import { Page } from './page'
-import { glider } from './store'
+import { factory } from './store'
 
 export class Measure extends Page {
   constructor(dom: HTMLElement) {
@@ -13,7 +13,7 @@ export class Measure extends Page {
     output += `<table class="c l">`
 
     //const headerCount = Object.keys(glider.left['a']).length
-    const headerCount = Object.values(glider.left).map(d => d.length).reduce((a, b) => Math.max(a, b), 0);
+    const headerCount = Object.values(factory.left).map(d => d.length).reduce((a, b) => Math.max(a, b), 0);
     
     output += `<th></th>`
     let n = Array(headerCount)
@@ -26,7 +26,7 @@ export class Measure extends Page {
 
     output+= '<td>' + n.join('</td><td>') + '</td>'
 
-    for(const [a, b] of Object.entries(glider.left)) {
+    for (const [a, b] of Object.entries(factory.left)) {
       if(a === 'v') {
         continue
       }
@@ -62,7 +62,7 @@ export class Measure extends Page {
 
     output+= '<td>' + n.join('</td><td>') + '</td>'
 
-    for(const [a, b] of Object.entries(glider.right)) {
+    for (const [a, b] of Object.entries(factory.right)) {
       if(a === 'v') {
         continue
       }

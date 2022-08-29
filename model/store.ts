@@ -2,8 +2,7 @@ import ion4LineplanPath from '/data/ion4-lineplan.json'
 
 interface Vector3 {
   x: number,
-  y: number,
-  z: number
+  y: number
 }
 
 interface PointMapInterface {
@@ -53,7 +52,7 @@ export const gliderObject: GliderInterface = {
   },
 }
 
-class Glider {
+class Factory {
   glider: GliderInterface
 
   constructor() {
@@ -176,4 +175,4 @@ class Glider {
   }
 }
 
-export const glider = new Glider()
+export const factory = new Factory()

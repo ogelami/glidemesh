@@ -1,5 +1,5 @@
 import { Page } from './page'
-import { glider } from './store'
+import { factory } from './store'
 import Delaunator from 'delaunator'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
@@ -64,7 +64,7 @@ export class Viewer extends Page {
       this.scene.remove(this.spheres[i])
     }
 
-    for (const side of [glider.left, glider.right]) {
+    for (const side of [factory.left, factory.right]) {
       for (const [pair, value] of Object.entries(side)) {
         //console.log(pair, value)
         //console.log(glider.pairColors[pair])

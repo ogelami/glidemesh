@@ -1,5 +1,6 @@
 import { Page } from './page'
-import { glider } from './store'
+import { factory } from './store'
+import { glider } from './glider'
 
 import ion4LineplanImagePath from '/images/ion4-lineplan-complete.png'
 
@@ -18,7 +19,7 @@ export class Editor extends Page {
 
   image: HTMLImageElement
 
-  holdTarget: HoldTarget
+  holdTarget?: HoldTarget
   pairSelect: string
 
   zValueOffset: number
@@ -61,7 +62,7 @@ export class Editor extends Page {
         const k = d.target as FileReader
         const parsedResult = JSON.parse(k.result.toString())
 
-        glider.load(parsedResult)
+        factory.load(parsedResult)
       }
 
       reader.readAsText(target.files[0])
@@ -74,7 +75,7 @@ export class Editor extends Page {
     }
 
     this.canvas.onmousedown = (e) => {
-      for (const [key, value] of Object.entries(glider.left)) {
+      for (const [key, value] of Object.entries(factory.left)) {
         let holdTargetDistance: number
 
         for (let i = 0; i < value.length; i++) {
@@ -97,17 +98,17 @@ export class Editor extends Page {
 
       if (
         this.pairSelect === 'v' &&
-        this.pairSelect in glider.left &&
-        glider.left.v.length >= 2
+        this.pairSelect in factory.left &&
+        factory.left.v.length >= 2
       ) {
         return
       }
 
-      glider.push(this.pairSelect, e.offsetX, e.offsetY)
+      factory.push(this.pairSelect, e.offsetX, e.offsetY)
 
       this.holdTarget = {
         pairSelect: this.pairSelect,
-        offset: glider.left[this.pairSelect].length - 1,
+        offset: factory.left[this.pairSelect].length - 1,
       }
     }
 
@@ -117,7 +118,7 @@ export class Editor extends Page {
 
     this.canvas.onmousemove = (e) => {
       if (this.holdTarget) {
-        glider.move(
+        factory.move(
           this.holdTarget.pairSelect,
           this.holdTarget.offset,
           e.offsetX,
@@ -128,37 +129,11 @@ export class Editor extends Page {
   }
 
   keyDownEvent(e) {
-    if (e.key in glider.pairColors) {
+    if (e.key in factory.pairColors) {
       this.pairSelect = e.key
     } else if (e.key == 'Backspace') {
-      if (this.pairSelect in glider.left) {
-        glider.pop(this.pairSelect)
-      }
-    } else if (e.key == 'Enter') {
-      let tempOffset = 0
-      const zValueParsed = parseInt(this.zValue)
-
-      for (const group of Object.values(glider.left)) {
-        for (const point of Object.values(group)) {
-          if (tempOffset == this.zValueOffset) {
-            point['z'] = zValueParsed
-
-            this.zValueOffset++
-            this.zValue = ''
-
-            return
-          }
-
-          tempOffset++
-        }
-      }
-    } else {
-      const maybeNumber = parseInt(e.key)
-
-      if (!isNaN(maybeNumber)) {
-        this.zValue += e.key
-
-        console.log(this.zValue)
+      if (this.pairSelect in factory.left) {
+        factory.pop(this.pairSelect)
       }
     }
   }
@@ -179,7 +154,7 @@ export class Editor extends Page {
 
   save(): void {
     const elem = window.document.createElement('a')
-    const data = glider.getData()
+    const data = factory.getData()
 
     if (data === false) {
       alert('missing v?')
@@ -187,7 +162,7 @@ export class Editor extends Page {
       return
     }
 
-    const blob = new Blob([JSON.stringify(glider.getData(), null, 2)], {
+    const blob = new Blob([JSON.stringify(factory.getData(), null, 2)], {
       type: 'text/json',
     })
 
@@ -209,8 +184,8 @@ export class Editor extends Page {
 
     this.context.strokeText(this.zValue, 0, 10)
 
-    for (const [key, value] of Object.entries(glider.left)) {
-      this.context.fillStyle = glider.pairColors[key]
+    for (const [key, value] of Object.entries(factory.left)) {
+      this.context.fillStyle = factory.pairColors[key]
 
       for (let i = 0; i < value.length; i++) {
         this.context.beginPath()
@@ -226,8 +201,8 @@ export class Editor extends Page {
       }
     }
 
-    for (const [key, value] of Object.entries(glider.right)) {
-      this.context.fillStyle = glider.pairColors[key]
+    for (const [key, value] of Object.entries(factory.right)) {
+      this.context.fillStyle = factory.pairColors[key]
 
       for (let i = 0; i < value.length; i++) {
         this.context.beginPath()

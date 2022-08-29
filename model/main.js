@@ -27,7 +27,7 @@ const params = {
   viewerReload: () => viewer.reload()
 }
 
-let targetPage = measure
+let targetPage = editor
 targetPage.display()
 
 gui

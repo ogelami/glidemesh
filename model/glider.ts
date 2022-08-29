@@ -1,5 +1,5 @@
 
-interface GliderGroup {
+interface GliderMeasurement {
   a?: Number[],
   b?: Number[],
   c?: Number[],
@@ -9,9 +9,9 @@ interface GliderGroup {
 }
 
 class Glider {
-  #data: { left: GliderGroup, right: GliderGroup }
-  #factory: GliderGroup
-  #deltaMap: { left: GliderGroup, right: GliderGroup }
+  #data: { left: GliderMeasurement, right: GliderMeasurement }
+  #factory: GliderMeasurement
+  #deltaMap: { left: GliderMeasurement, right: GliderMeasurement }
 
   constructor() { 
     this.#data = { left : {}, right : {}}
@@ -31,7 +31,7 @@ class Glider {
     
   }
 
-  setFactory(glideSide: GliderGroup) {
+  setFactory(glideSide: GliderMeasurement) {
     this.#factory = glideSide
   }
 
@@ -45,10 +45,10 @@ class Glider {
   }
 }
 
-const z = new Glider()
+/*const z = new Glider()
 z.addMeasurement('left', 'a', 0, 1345)
 z.addMeasurement('left', 'a', 1, 1345)
 console.log(z.saveAsJson())
-console.log(Glider)
+console.log(Glider)*/
 
 export const glider = new Glider()
