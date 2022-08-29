@@ -30,9 +30,9 @@ export class Editor extends Page {
     super(dom)
 
     this.inp = document.getElementById('inp') as HTMLInputElement
-    this.loadie = document.getElementById('loadie')
+    this.loadie = document.getElementById('loadie') as HTMLElement
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement
-    this.context = this.canvas.getContext('2d')
+    this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D
 
     this.image = new Image()
     this.pairSelect = 'a'
